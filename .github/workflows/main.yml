@@ -21,44 +21,77 @@ jobs:
 
       - name: Debug ZIIT response
         run: cat ziit.json
-
       - name: Generate Language Chart SVG
         run: |
           LANG_DATA=$(jq -r '[.summaries[].languages] | add | to_entries | sort_by(.value) | reverse' ziit.json)
           TOTAL=$(echo "$LANG_DATA" | jq '[.[].value] | add')
-
-          # SVG Header
-          echo '<svg width="600" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">' > chart.svg
-          echo '<style>
-            text { fill: #e6e6e6; font-family: monospace; font-size: 14px; }
-            .bar { rx: 5; ry: 5; animation: grow 1.6s ease-out forwards; transform-origin: left; }
-            @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-          </style>' >> chart.svg
-
+          
+          # Calculate height dynamically
+          ITEM_COUNT=$(echo "$LANG_DATA" | jq 'length')
+          HEIGHT=$((ITEM_COUNT * 35 + 40))
+          
+          # SVG Header with dynamic height
+          cat > chart.svg << 'EOF'
+          <svg width="700" height="HEIGHT_PLACEHOLDER" viewBox="0 0 700 HEIGHT_PLACEHOLDER" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#ff6a00"/>
+                <stop offset="50%" stop-color="#ff0080"/>
+                <stop offset="100%" stop-color="#ee0979"/>
+              </linearGradient>
+            </defs>
+            <style>
+              text { fill: #e6e6e6; font-family: 'Segoe UI', monospace; font-size: 14px; }
+              .lang-name { font-weight: 600; }
+              .percentage { fill: #a0a0a0; font-size: 12px; }
+              .bar { 
+                rx: 7; 
+                ry: 7; 
+                opacity: 0;
+                animation: slideIn 0.8s ease-out forwards;
+              }
+              @keyframes slideIn {
+                0% { 
+                  opacity: 0;
+                  transform: scaleX(0) translateX(-10px);
+                }
+                100% { 
+                  opacity: 1;
+                  transform: scaleX(1) translateX(0);
+                }
+              }
+            </style>
+          EOF
+          
+          # Replace height placeholder
+          sed -i "s/HEIGHT_PLACEHOLDER/$HEIGHT/g" chart.svg
+          
           Y=30
+          INDEX=0
+          MAX_BAR_WIDTH=450
+          
           echo "$LANG_DATA" | jq -c '.[]' | while read item; do
             NAME=$(echo "$item" | jq -r '.key')
             SEC=$(echo "$item" | jq -r '.value')
-            PCT=$(echo "scale=4; ($SEC/$TOTAL)" | bc)
-            WIDTH=$(echo "600 * $PCT" | bc)
-
-            # Language Label
-            echo "<text x='10' y='$Y'>$NAME</text>" >> chart.svg
-
-            # Gradient Bar
-            echo "<rect x='100' y='$((Y-12))' width='$WIDTH' height='15' class='bar' fill='url(#grad)' />" >> chart.svg
-
-            Y=$((Y+30))
+            PCT=$(echo "scale=2; ($SEC/$TOTAL)*100" | bc)
+            BAR_WIDTH=$(echo "scale=0; $MAX_BAR_WIDTH * $SEC / $TOTAL" | bc)
+            
+            # Stagger animation delay
+            DELAY=$(echo "scale=2; $INDEX * 0.1" | bc)
+            
+            # Language name
+            echo "<text x='10' y='$Y' class='lang-name'>$NAME</text>" >> chart.svg
+            
+            # Animated bar with delay
+            echo "<rect x='150' y='$((Y-14))' width='$BAR_WIDTH' height='18' class='bar' fill='url(#grad)' style='animation-delay: ${DELAY}s; transform-origin: 150px $((Y-5))px;' />" >> chart.svg
+            
+            # Percentage text
+            echo "<text x='$((150 + BAR_WIDTH + 10))' y='$Y' class='percentage'>${PCT}%</text>" >> chart.svg
+            
+            Y=$((Y+35))
+            INDEX=$((INDEX+1))
           done
-
-          # Gradient Definition at end
-          echo '<defs>
-            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#ff6a00"/>
-              <stop offset="100%" stop-color="#ee0979"/>
-            </linearGradient>
-          </defs>' >> chart.svg
-
+          
           echo '</svg>' >> chart.svg
 
       - name: Update README
