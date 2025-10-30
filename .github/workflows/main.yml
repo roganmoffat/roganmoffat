@@ -19,6 +19,8 @@ jobs:
           curl -X GET "https://ziit.app/api/external/stats?timeRange=today&midnightOffsetSeconds=0" \
           -H "Authorization: Bearer ${{ secrets.ZIIT_KEY }}" \
           -o ziit.json
+      - name: Debug ZIIT response
+        run: cat ziit.json
 
       - name: Generate Language Chart
         id: chart
