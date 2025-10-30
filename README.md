@@ -6,3 +6,9 @@ computer science major @ guelph
 - web design & games
 - 3d artist
 
+### Top Languages (from ZIIT)
+
+<!-- ZIIT-LANG-CHART-START -->
+_loading chart..._
+<!-- ZIIT-LANG-CHART-END -->
+

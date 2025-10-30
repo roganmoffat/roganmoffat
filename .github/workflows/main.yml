@@ -1,15 +1,50 @@
-
-name: ZIIT API CALL
+name: Update Language Chart
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: "0 */6 * * *" # every 6 hours
+  workflow_dispatch:      # allow manual run
 
 jobs:
-  call_api:
+  update-readme:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Make a GET request
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Call ZIIT API
+        id: ziit
         run: |
           curl -X GET "https://ziit.app/api/external/stats?timeRange=all_time&midnightOffsetSeconds=0" \
-            -H "Authorization: Bearer ${{ secrets.ZIIT_API_KEY }}"
+          -H "Authorization: Bearer ${{ secrets.ZIIT_KEY }}" \
+          -o ziit.json
+
+      - name: Generate Language Chart
+        id: chart
+        run: |
+          LANG_DATA=$(jq -r '[.summaries[].languages] | add | to_entries | sort_by(.value) | reverse' ziit.json)
+
+          echo "| Language | Time |" > chart.md
+          echo "|---------:|-----:|" >> chart.md
+
+          TOTAL=$(echo "$LANG_DATA" | jq '[.[].value] | add')
+
+          echo "$LANG_DATA" | jq -c '.[]' | while read item; do
+            NAME=$(echo "$item" | jq -r '.key')
+            SEC=$(echo "$item" | jq -r '.value')
+            PCT=$(echo "scale=2; ($SEC/$TOTAL)*100" | bc)
+            BAR=$(printf "%0.s▮" $(seq 1 $(echo "$PCT/2" | bc)))
+            echo "| $NAME | $BAR (${PCT}%) |" >> chart.md
+          done
+
+      - name: Update README
+        run: |
+          awk ' /ZIIT-LANG-CHART-START/ {print; system("cat chart.md"); next} /ZIIT-LANG-CHART-END/ {found=1} !found' README.md > newREADME
+          mv newREADME README.md
+
+      - name: Commit & Push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "chore: update language chart"
+          branch: main
