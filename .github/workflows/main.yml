@@ -1,5 +1,6 @@
 name: Update Language Chart
-
+permissions:
+  contents: write
 on:
   schedule:
     - cron: "0 */6 * * *" # every 6 hours
