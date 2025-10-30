@@ -16,7 +16,7 @@ jobs:
       - name: Call ZIIT API
         id: ziit
         run: |
-          curl -X GET "https://ziit.app/api/external/stats?timeRange=month&midnightOffsetSeconds=0" \
+          curl -X GET "https://ziit.app/api/external/stats?timeRange=today&midnightOffsetSeconds=0" \
           -H "Authorization: Bearer ${{ secrets.ZIIT_KEY }}" \
           -o ziit.json
 
