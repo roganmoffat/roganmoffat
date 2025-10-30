@@ -22,27 +22,48 @@ jobs:
       - name: Debug ZIIT response
         run: cat ziit.json
 
-      - name: Generate Language Chart
-        id: chart
+      - name: Generate Language Chart SVG
         run: |
           LANG_DATA=$(jq -r '[.summaries[].languages] | add | to_entries | sort_by(.value) | reverse' ziit.json)
-
-          echo "| Language | Time |" > chart.md
-          echo "|---------:|-----:|" >> chart.md
-
           TOTAL=$(echo "$LANG_DATA" | jq '[.[].value] | add')
 
+          # SVG Header
+          echo '<svg width="600" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">' > chart.svg
+          echo '<style>
+            text { fill: #e6e6e6; font-family: monospace; font-size: 14px; }
+            .bar { rx: 5; ry: 5; animation: grow 1.6s ease-out forwards; transform-origin: left; }
+            @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+          </style>' >> chart.svg
+
+          Y=30
           echo "$LANG_DATA" | jq -c '.[]' | while read item; do
             NAME=$(echo "$item" | jq -r '.key')
             SEC=$(echo "$item" | jq -r '.value')
-            PCT=$(echo "scale=2; ($SEC/$TOTAL)*100" | bc)
-            BAR=$(printf "%0.s▮" $(seq 1 $(echo "$PCT/2" | bc)))
-            echo "| $NAME | $BAR (${PCT}%) |" >> chart.md
+            PCT=$(echo "scale=4; ($SEC/$TOTAL)" | bc)
+            WIDTH=$(echo "600 * $PCT" | bc)
+
+            # Language Label
+            echo "<text x='10' y='$Y'>$NAME</text>" >> chart.svg
+
+            # Gradient Bar
+            echo "<rect x='100' y='$((Y-12))' width='$WIDTH' height='15' class='bar' fill='url(#grad)' />" >> chart.svg
+
+            Y=$((Y+30))
           done
+
+          # Gradient Definition at end
+          echo '<defs>
+            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#ff6a00"/>
+              <stop offset="100%" stop-color="#ee0979"/>
+            </linearGradient>
+          </defs>' >> chart.svg
+
+          echo '</svg>' >> chart.svg
 
       - name: Update README
         run: |
-          awk ' /ZIIT-LANG-CHART-START/ {print; system("cat chart.md"); next} /ZIIT-LANG-CHART-END/ {found=1} !found' README.md > newREADME
+          awk ' /ZIIT-LANG-CHART-START/ {print; print "<img src=\"chart.svg\" width=\"100%\">"; skip=1; next} /ZIIT-LANG-CHART-END/ {skip=0} !skip' README.md > newREADME
           mv newREADME README.md
 
       - name: Commit & Push

@@ -8,6 +8,6 @@ computer science major @ guelph
 
 ### Top Languages (from ZIIT)
 
-<!-- ZIIT_LANGUAGES_START -->
-loading chart...
-<!-- ZIIT_LANGUAGES_END -->
+<!-- ZIIT-LANG-CHART-START -->
+<img src="chart.svg" width="100%">
+<!-- ZIIT-LANG-CHART-END -->
