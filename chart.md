@@ -1,17 +1,5 @@
-## hey im rogan
-
-computer science major @ guelph
-
-- making things with code
-- web design & games
-- 3d artist
-
-### Top Languages (from ZIIT)
-
-<!-- ZIIT-LANG-CHART-START -->
 | Language | Time |
 |---------:|-----:|
 | c | ▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮ (62.00%) |
 | jsonc | ▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮ (36.00%) |
 | Log | ▮ (1.00%) |
-_loading chart..._
