@@ -1,0 +1,39 @@
+<svg width="700" height="145" viewBox="0 0 700 145" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff6a00"/>
+      <stop offset="50%" stop-color="#ff0080"/>
+      <stop offset="100%" stop-color="#ee0979"/>
+    </linearGradient>
+  </defs>
+  <style>
+    text { fill: #c72a2aff; font-family: 'Segoe UI', monospace; font-size: 14px; }
+    .lang-name { font-weight: 600; }
+    .percentage { fill: #f1851fff; font-size: 12px; }
+    .bar { 
+      rx: 7; 
+      ry: 7; 
+      opacity: 0;
+      animation: slideIn 0.8s ease-out forwards;
+    }
+    @keyframes slideIn {
+      0% { 
+        opacity: 0;
+        transform: scaleX(0) translateX(-10px);
+      }
+      100% { 
+        opacity: 1;
+        transform: scaleX(1) translateX(0);
+      }
+    }
+  </style>
+<text x='10' y='30' class='lang-name'>c</text>
+<rect x='150' y='16' width='280' height='18' class='bar' fill='url(#grad)' style='animation-delay: 0s; transform-origin: 150px 25px;' />
+<text x='440' y='30' class='percentage'>62.00%</text>
+<text x='10' y='65' class='lang-name'>jsonc</text>
+<rect x='150' y='51' width='162' height='18' class='bar' fill='url(#grad)' style='animation-delay: .1s; transform-origin: 150px 60px;' />
+<text x='322' y='65' class='percentage'>36.00%</text>
+<text x='10' y='100' class='lang-name'>Log</text>
+<rect x='150' y='86' width='6' height='18' class='bar' fill='url(#grad)' style='animation-delay: .2s; transform-origin: 150px 95px;' />
+<text x='166' y='100' class='percentage'>1.00%</text>
+</svg>
