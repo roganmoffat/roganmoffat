@@ -13,14 +13,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Call ZIIT API
+      - name: Call ZIIT API (via Cloudflare Worker)
         run: |
-          curl -s "https://ziit.app/api/external/stats?timeRange=month&midnightOffsetSeconds=0" \
-            -H "Authorization: Bearer ${{ secrets.ZIIT_KEY }}" \
-            -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36" \
-            -H "Accept: application/json" \
-            --http1.1 \
-            --compressed \
+          curl -s "https://ziit-request.roganmoffat.workers.dev?timeRange=month&midnightOffsetSeconds=0" \
             -o ziit.json
 
       - name: Debug ZIIT response
