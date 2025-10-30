@@ -1,144 +1,53 @@
-name: Update Language Chart (Playwright fetch)
+name: Update Language Chart
 
 on:
-  workflow_dispatch:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 */6 * * *" # every 6 hours
+  workflow_dispatch:      # allow manual run
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install Playwright
+      - name: Call ZIIT API
         run: |
-          npm init -y
-          npm i playwright@1.48.0  # pin a stable version
-          npx playwright install --with-deps chromium
+          curl -s "https://ziit.app/api/external/stats?timeRange=month&midnightOffsetSeconds=0" \
+            -H "Authorization: Bearer ${{ secrets.ZIIT_KEY }}" \
+            -H "Accept: application/json" \
+            -o ziit.json
 
-      - name: Fetch ZIIT JSON with Playwright
-        id: fetch_ziit
-        env:
-          ZIIT_KEY: ${{ secrets.ZIIT_KEY }}   # set this secret in repo settings
-          ZIIT_TIME_RANGE: this_month
-        run: |
-          cat > fetch_ziit.js <<'JS'
-          const fs = require('fs');
-          const { chromium } = require('playwright');
+      - name: Debug ZIIT response
+        run: cat ziit.json
 
-          (async () => {
-            const url = `https://ziit.app/api/external/stats?timeRange=${process.env.ZIIT_TIME_RANGE||'this_month'}&midnightOffsetSeconds=0`;
-            const authHeader = process.env.ZIIT_KEY; // should be "Bearer ..."
-
-            const browser = await chromium.launch({ args: ['--no-sandbox','--disable-setuid-sandbox'] });
-            const context = await browser.newContext({
-              userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
-            });
-            const page = await context.newPage();
-
-            // 1) Visit the site root (or the API URL directly) to allow Cloudflare challenge to run
-            // visiting root often triggers challenge and sets cookies
-            await page.goto('https://ziit.app', { waitUntil: 'domcontentloaded', timeout: 60000 }).catch(()=>{});
-
-            // 2) Now make a fetch from the browser context (this runs JS and uses the challenge cookies)
-            const resp = await page.evaluate(async (url, auth) => {
-              const res = await fetch(url, {
-                method: 'GET',
-                headers: {
-                  'Authorization': auth,
-                  'Accept': 'application/json'
-                },
-                credentials: 'include'
-              });
-              const text = await res.text();
-              return { status: res.status, text };
-            }, url, authHeader);
-
-            await browser.close();
-
-            if (!resp || !resp.text) {
-              console.error('No response from API');
-              process.exit(2);
-            }
-            // Save raw output
-            fs.writeFileSync('ziit.json', resp.text);
-            console.log('Wrote ziit.json (status ' + resp.status + ')');
-            if (resp.status !== 200) {
-              console.error('Non-200 status: ' + resp.status);
-              process.exit(3);
-            }
-          })().catch(err => { console.error(err); process.exit(5); });
-          JS
-
-          node fetch_ziit.js
-          
-      - name: Dump ziit.json for debugging
-        if: failure() || always()
-        run: |
-          echo "=== START ziit.json ==="
-          sed -n '1,200p' ziit.json || true
-          echo "=== END ziit.json ==="
-
-      - name: Generate Language Chart (safe)
+      - name: Generate Language Chart
         id: chart
         run: |
-          # sanity check
-          if ! jq -e '.summaries and (.summaries | length > 0)' ziit.json >/dev/null 2>&1; then
-            echo "No summaries or empty response; writing placeholder."
-            echo "| Language | Usage |" > chart.md
-            echo "|---------:|------:|" >> chart.md
-            echo "| _No activity in selected range_ |  |" >> chart.md
-            exit 0
-          fi
+          LANG_DATA=$(jq -r '[.summaries[].languages] | add | to_entries | sort_by(.value) | reverse' ziit.json)
 
-          LANG_DATA=$(jq -c '[.summaries[].languages // {}] | add | to_entries | sort_by(.value) | reverse' ziit.json)
-          echo "| Language | Usage |" > chart.md
-          echo "|---------:|------:|" >> chart.md
+          echo "| Language | Time |" > chart.md
+          echo "|---------:|-----:|" >> chart.md
+
           TOTAL=$(echo "$LANG_DATA" | jq '[.[].value] | add')
 
           echo "$LANG_DATA" | jq -c '.[]' | while read item; do
             NAME=$(echo "$item" | jq -r '.key')
             SEC=$(echo "$item" | jq -r '.value')
-            # avoid division by zero
-            if [ "$TOTAL" = "null" ] || [ "$TOTAL" = "0" ]; then
-              PCT="0.00"
-            else
-              PCT=$(awk -v s="$SEC" -v t="$TOTAL" 'BEGIN{printf "%.2f", (s/t)*100}')
-            fi
-            BARCNT=$(printf "%.0f" "$(awk -v p="$PCT" 'BEGIN{printf "%f", p/2}')")
-            BAR=""
-            if [ "$BARCNT" -gt 0 ]; then
-              for i in $(seq 1 $BARCNT); do BAR="${BAR}▮"; done
-            fi
+            PCT=$(echo "scale=2; ($SEC/$TOTAL)*100" | bc)
+            BAR=$(printf "%0.s▮" $(seq 1 $(echo "$PCT/2" | bc)))
             echo "| $NAME | $BAR (${PCT}%) |" >> chart.md
           done
 
-      - name: Update README between markers
+      - name: Update README
         run: |
-          START="<!-- ZIIT-LANG-CHART-START -->"
-          END="<!-- ZIIT-LANG-CHART-END -->"
-          # create new README with chart inserted after START
-          awk -v start="$START" -v end="$END" '
-            {print}
-            $0 ~ start {
-              while ((getline line < "chart.md") > 0) {
-                print line
-              }
-            }
-          ' README.md > README.new || true
-          mv README.new README.md
+          awk ' /ZIIT-LANG-CHART-START/ {print; system("cat chart.md"); next} /ZIIT-LANG-CHART-END/ {found=1} !found' README.md > newREADME
+          mv newREADME README.md
 
       - name: Commit & Push
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "chore: update ziit language chart"
+          commit_message: "chore: update language chart"
           branch: main
