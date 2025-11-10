@@ -28,36 +28,36 @@
     }
   </style>
 <text x='10' y='30' class='lang-name'>github-actions-workflow</text>
-<rect x='150' y='16' width='310' height='18' class='bar' fill='url(#grad)' style='animation-delay: 0s; transform-origin: 150px 25px;' />
-<text x='470' y='30' class='percentage'>69.00%</text>
+<rect x='150' y='16' width='286' height='18' class='bar' fill='url(#grad)' style='animation-delay: 0s; transform-origin: 150px 25px;' />
+<text x='446' y='30' class='percentage'>63.00%</text>
 <text x='10' y='65' class='lang-name'>c</text>
-<rect x='150' y='51' width='45' height='18' class='bar' fill='url(#grad)' style='animation-delay: .1s; transform-origin: 150px 60px;' />
-<text x='205' y='65' class='percentage'>10.00%</text>
-<text x='10' y='100' class='lang-name'>html</text>
-<rect x='150' y='86' width='32' height='18' class='bar' fill='url(#grad)' style='animation-delay: .2s; transform-origin: 150px 95px;' />
-<text x='192' y='100' class='percentage'>7.00%</text>
-<text x='10' y='135' class='lang-name'>jsonc</text>
-<rect x='150' y='121' width='26' height='18' class='bar' fill='url(#grad)' style='animation-delay: .3s; transform-origin: 150px 130px;' />
-<text x='186' y='135' class='percentage'>5.00%</text>
-<text x='10' y='170' class='lang-name'>json</text>
-<rect x='150' y='156' width='13' height='18' class='bar' fill='url(#grad)' style='animation-delay: .4s; transform-origin: 150px 165px;' />
-<text x='173' y='170' class='percentage'>2.00%</text>
-<text x='10' y='205' class='lang-name'>cpp</text>
+<rect x='150' y='51' width='41' height='18' class='bar' fill='url(#grad)' style='animation-delay: .1s; transform-origin: 150px 60px;' />
+<text x='201' y='65' class='percentage'>9.00%</text>
+<text x='10' y='100' class='lang-name'>python</text>
+<rect x='150' y='86' width='37' height='18' class='bar' fill='url(#grad)' style='animation-delay: .2s; transform-origin: 150px 95px;' />
+<text x='197' y='100' class='percentage'>8.00%</text>
+<text x='10' y='135' class='lang-name'>html</text>
+<rect x='150' y='121' width='29' height='18' class='bar' fill='url(#grad)' style='animation-delay: .3s; transform-origin: 150px 130px;' />
+<text x='189' y='135' class='percentage'>6.00%</text>
+<text x='10' y='170' class='lang-name'>jsonc</text>
+<rect x='150' y='156' width='24' height='18' class='bar' fill='url(#grad)' style='animation-delay: .4s; transform-origin: 150px 165px;' />
+<text x='184' y='170' class='percentage'>5.00%</text>
+<text x='10' y='205' class='lang-name'>json</text>
 <rect x='150' y='191' width='12' height='18' class='bar' fill='url(#grad)' style='animation-delay: .5s; transform-origin: 150px 200px;' />
 <text x='172' y='205' class='percentage'>2.00%</text>
-<text x='10' y='240' class='lang-name'>properties</text>
-<rect x='150' y='226' width='4' height='18' class='bar' fill='url(#grad)' style='animation-delay: .6s; transform-origin: 150px 235px;' />
-<text x='164' y='240' class='percentage'>1.00%</text>
-<text x='10' y='275' class='lang-name'>plaintext</text>
-<rect x='150' y='261' width='2' height='18' class='bar' fill='url(#grad)' style='animation-delay: .7s; transform-origin: 150px 270px;' />
-<text x='162' y='275' class='percentage'>0%</text>
+<text x='10' y='240' class='lang-name'>cpp</text>
+<rect x='150' y='226' width='11' height='18' class='bar' fill='url(#grad)' style='animation-delay: .6s; transform-origin: 150px 235px;' />
+<text x='171' y='240' class='percentage'>2.00%</text>
+<text x='10' y='275' class='lang-name'>properties</text>
+<rect x='150' y='261' width='4' height='18' class='bar' fill='url(#grad)' style='animation-delay: .7s; transform-origin: 150px 270px;' />
+<text x='164' y='275' class='percentage'>0%</text>
 <text x='10' y='310' class='lang-name'>Log</text>
-<rect x='150' y='296' width='1' height='18' class='bar' fill='url(#grad)' style='animation-delay: .8s; transform-origin: 150px 305px;' />
-<text x='161' y='310' class='percentage'>0%</text>
+<rect x='150' y='296' width='0' height='18' class='bar' fill='url(#grad)' style='animation-delay: .8s; transform-origin: 150px 305px;' />
+<text x='160' y='310' class='percentage'>0%</text>
 <text x='10' y='345' class='lang-name'>ignore</text>
 <rect x='150' y='331' width='0' height='18' class='bar' fill='url(#grad)' style='animation-delay: .9s; transform-origin: 150px 340px;' />
 <text x='160' y='345' class='percentage'>0%</text>
-<text x='10' y='380' class='lang-name'>python</text>
+<text x='10' y='380' class='lang-name'>plaintext</text>
 <rect x='150' y='366' width='0' height='18' class='bar' fill='url(#grad)' style='animation-delay: 1.0s; transform-origin: 150px 375px;' />
 <text x='160' y='380' class='percentage'>0%</text>
 <text x='10' y='415' class='lang-name'>markdown</text>
