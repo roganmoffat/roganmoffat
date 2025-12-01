@@ -28,33 +28,33 @@
     }
   </style>
 <text x='10' y='30' class='lang-name'>rust</text>
-<rect x='150' y='16' width='148' height='18' class='bar' fill='url(#grad)' style='animation-delay: 0s; transform-origin: 150px 25px;' />
-<text x='308' y='30' class='percentage'>32.00%</text>
+<rect x='150' y='16' width='147' height='18' class='bar' fill='url(#grad)' style='animation-delay: 0s; transform-origin: 150px 25px;' />
+<text x='307' y='30' class='percentage'>32.00%</text>
 <text x='10' y='65' class='lang-name'>javascriptreact</text>
-<rect x='150' y='51' width='109' height='18' class='bar' fill='url(#grad)' style='animation-delay: .1s; transform-origin: 150px 60px;' />
-<text x='269' y='65' class='percentage'>24.00%</text>
+<rect x='150' y='51' width='108' height='18' class='bar' fill='url(#grad)' style='animation-delay: .1s; transform-origin: 150px 60px;' />
+<text x='268' y='65' class='percentage'>24.00%</text>
 <text x='10' y='100' class='lang-name'>astro</text>
-<rect x='150' y='86' width='92' height='18' class='bar' fill='url(#grad)' style='animation-delay: .2s; transform-origin: 150px 95px;' />
-<text x='252' y='100' class='percentage'>20.00%</text>
+<rect x='150' y='86' width='91' height='18' class='bar' fill='url(#grad)' style='animation-delay: .2s; transform-origin: 150px 95px;' />
+<text x='251' y='100' class='percentage'>20.00%</text>
 <text x='10' y='135' class='lang-name'>html</text>
 <rect x='150' y='121' width='29' height='18' class='bar' fill='url(#grad)' style='animation-delay: .3s; transform-origin: 150px 130px;' />
 <text x='189' y='135' class='percentage'>6.00%</text>
 <text x='10' y='170' class='lang-name'>javascript</text>
-<rect x='150' y='156' width='12' height='18' class='bar' fill='url(#grad)' style='animation-delay: .4s; transform-origin: 150px 165px;' />
-<text x='172' y='170' class='percentage'>2.00%</text>
+<rect x='150' y='156' width='11' height='18' class='bar' fill='url(#grad)' style='animation-delay: .4s; transform-origin: 150px 165px;' />
+<text x='171' y='170' class='percentage'>2.00%</text>
 <text x='10' y='205' class='lang-name'>markdown</text>
-<rect x='150' y='191' width='11' height='18' class='bar' fill='url(#grad)' style='animation-delay: .5s; transform-origin: 150px 200px;' />
-<text x='171' y='205' class='percentage'>2.00%</text>
-<text x='10' y='240' class='lang-name'>properties</text>
+<rect x='150' y='191' width='10' height='18' class='bar' fill='url(#grad)' style='animation-delay: .5s; transform-origin: 150px 200px;' />
+<text x='170' y='205' class='percentage'>2.00%</text>
+<text x='10' y='240' class='lang-name'>c</text>
 <rect x='150' y='226' width='10' height='18' class='bar' fill='url(#grad)' style='animation-delay: .6s; transform-origin: 150px 235px;' />
 <text x='170' y='240' class='percentage'>2.00%</text>
-<text x='10' y='275' class='lang-name'>json</text>
-<rect x='150' y='261' width='7' height='18' class='bar' fill='url(#grad)' style='animation-delay: .7s; transform-origin: 150px 270px;' />
-<text x='167' y='275' class='percentage'>1.00%</text>
-<text x='10' y='310' class='lang-name'>python</text>
-<rect x='150' y='296' width='6' height='18' class='bar' fill='url(#grad)' style='animation-delay: .8s; transform-origin: 150px 305px;' />
-<text x='166' y='310' class='percentage'>1.00%</text>
-<text x='10' y='345' class='lang-name'>c</text>
+<text x='10' y='275' class='lang-name'>properties</text>
+<rect x='150' y='261' width='10' height='18' class='bar' fill='url(#grad)' style='animation-delay: .7s; transform-origin: 150px 270px;' />
+<text x='170' y='275' class='percentage'>2.00%</text>
+<text x='10' y='310' class='lang-name'>json</text>
+<rect x='150' y='296' width='7' height='18' class='bar' fill='url(#grad)' style='animation-delay: .8s; transform-origin: 150px 305px;' />
+<text x='167' y='310' class='percentage'>1.00%</text>
+<text x='10' y='345' class='lang-name'>python</text>
 <rect x='150' y='331' width='6' height='18' class='bar' fill='url(#grad)' style='animation-delay: .9s; transform-origin: 150px 340px;' />
 <text x='166' y='345' class='percentage'>1.00%</text>
 <text x='10' y='380' class='lang-name'>luau</text>
